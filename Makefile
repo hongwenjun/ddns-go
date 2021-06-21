@@ -12,7 +12,7 @@ GOROOT=$(shell `which go` env GOROOT)
 GOPATH=$(shell `which go` env GOPATH)
 
 build: $(DIR_SRC)/main.go
-	@$(GO) build $(GO_FLAGS) -o $(BIN) $(DIR_SRC)
+	@$(GO) build -v $(GO_FLAGS) -o $(BIN) $(DIR_SRC)
 
 build_docker_image:
 	@$(DOCKER_CMD) build -f ./Dockerfile -t ddns-go:$(VERSION) .
