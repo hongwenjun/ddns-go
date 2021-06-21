@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 RUN go env -w GO111MODULE=on \
     && go env -w GOPROXY=https://goproxy.cn,direct \
-    &&  pwd   && make clean build   && pwd && ls -l
+    &&  pwd   && go build -o ddns-go .   && pwd && ls -l
 
 # final stage
 FROM alpine
