@@ -1,10 +1,10 @@
 # build stage
 FROM golang:1.16 AS builder
-
+WORKDIR /app
 COPY . .
 RUN go env -w GO111MODULE=on \
     && go env -w GOPROXY=https://goproxy.cn,direct \
-    &&  pwd   && go build -o ddns-go .   && pwd && ls -l
+    &&  pwd   && go build -o ddns-go .   && pwd && ls -l && cp ddns-go  /myddns
 
 # final stage
 FROM alpine
@@ -15,7 +15,7 @@ WORKDIR /app
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories \
     && apk add --no-cache tzdata
 ENV TZ=Asia/Shanghai
-COPY --from=builder /ddns-go /app/ddns-go
+COPY --from=builder /myddns /app/myddns 
 EXPOSE 9876
 ENTRYPOINT ["/app/ddns-go"]
 CMD ["-l", ":9876", "-f", "300"]
